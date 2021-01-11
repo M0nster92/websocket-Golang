@@ -1,0 +1,37 @@
+<html>
+   <head>
+   </head>
+   <body>
+      <h1>Info:</h1>
+      <div id="name">Name</div>
+      <div id="age"></div>
+      <script type="text/javascript">
+         var name = document.getElementById("name");
+         var age = document.getElementById("age");
+
+        // 2
+         var exampleSocket = new WebSocket("ws://localhost:8080/ws")
+
+         exampleSocket.onopen = () => {
+            console.log("Successfully Connected");
+            exampleSocket.send("Hi From the Client!")
+        };
+
+         // 3
+         var update = function(){
+           exampleSocket.onmessage = function (event) {
+             console.log(event)
+             //var longlatArr = event.data.split(" ");
+             if(event){
+               var data = JSON.parse(event.data);
+               console.log(data);
+               name.textContent = data.name;
+               age.textContent = data.age;
+             }
+
+           }
+         };
+         window.setTimeout(update);
+      </script>
+   </body>
+</html>
